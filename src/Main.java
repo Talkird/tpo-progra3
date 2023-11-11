@@ -1,9 +1,7 @@
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.lang.Math;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 
@@ -18,29 +16,36 @@ public class Main {
         }
     }
 
-    public static String[][] generarMapa(int filas, int columnas, Touple entrada, Touple salida, HashMap<String, Rango> p) throws Exception{
-        String[][] mapa = new String[filas][columnas];
+
+    public static ArrayList<Touple> posPortal(String[][] mapa, String portal, Touple inicial) {
+        ArrayList<Touple> posPortal = new ArrayList<>();
 
         for (int i = 0; i < mapa.length; i++) {
             for (int j = 0; j < mapa[0].length; j++) {
-                
-                if (!(i == entrada.fila && j == entrada.columna) || (i == salida.fila && j == salida.columna)) {
-                    int random = 0 + (int)(Math.random() * 10);
-
-                    if (random >= p.get(".").min && random <= p.get(".").max) {mapa[i][j] = ".";}
-                    else if (random >=  p.get("#").min && random <= p.get("#").max) {mapa[i][j] = "#";} 
-                    //TODO PORTAL else if (random >=  p.get("p").min && random <= p.get("p").max) {mapa[i][j] = "p";}
-
+                if (inicial.fila != i && inicial.columna != j) {
+                    Touple pos = new Touple(i, j);
+                    if (mapa[i][j].equals(portal)) {
+                        posPortal.add(pos);
+                    }
                 }
-                mapa[entrada.fila][entrada.columna] = "E";
-                mapa[salida.fila][salida.columna] = "S";
-            }
+            }      
         }
-        return mapa;
+
+        return posPortal;
     }
+
 
     public static ArrayList<Touple> obtenerMovimientosValidos(String[][] mapa, Touple actual) {
         ArrayList<Touple> movimientosValidos = new ArrayList<>();
+
+        //Portal
+        String letra = mapa[actual.fila][actual.columna];
+        if (!letra.equals("E") && letra.chars().allMatch(Character::isLetter)) {
+            ArrayList<Touple> posPortal = posPortal(mapa, letra, actual);
+            for (Touple t : posPortal) {
+                movimientosValidos.add(t);
+            }
+        }
 
         //Fila
         if (actual.fila < mapa.length-1 && 
@@ -134,23 +139,16 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        /* 
-        Touple entrada = new Touple(0, 0);
-        Touple salida = new Touple(2, 2);
-        HashMap<String, Rango> p = new HashMap<>();
-        p.put(".", new Rango(0, 6));
-        p.put("#", new Rango(7, 9));
-        //p.put("p", new Rango(9, 9));
-        */
+
 
         String[][] mapa = {
-            {"E", ".", ".", "#"},
-            {".", "#", ".", "."}, 
-            {"#", "S", ".", "."}
+            {"E", "a", "#", "#"},
+            {".", "#", "#", "."}, 
+            {"#", "S", "a", "."}
         }; 
         
 
-        mapa = abrirLaberinto("data/laberinto.txt");
+        //mapa = abrirLaberinto("data/laberinto.txt");
         int movimientos = 0;
 
         ArrayList<Touple> visitados = new ArrayList<>();
