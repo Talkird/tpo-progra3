@@ -142,13 +142,13 @@ public class Main {
 
 
         String[][] mapa = {
-            {"E", "a", "#", "#"},
-            {".", "#", "#", "."}, 
-            {"#", "S", "a", "."}
+            {"E", "a", "#", "a"},
+            {".", "#", "#", "#"}, 
+            {"#", "S", ".", "."}
         }; 
         
 
-        //mapa = abrirLaberinto("data/laberinto.txt");
+        mapa = abrirLaberinto("data/laberinto.txt");
         int movimientos = 0;
 
         ArrayList<Touple> visitados = new ArrayList<>();
