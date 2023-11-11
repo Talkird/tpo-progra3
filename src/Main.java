@@ -140,17 +140,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-
-        String[][] mapa = {
-            {"E", "a", "#", "a"},
-            {".", "#", "#", "#"}, 
-            {"#", "S", ".", "."}
-        }; 
+        String[][] mapa = abrirLaberinto("laberintos/portales.txt");
         
-
-        mapa = abrirLaberinto("data/laberinto.txt");
         int movimientos = 0;
-
         ArrayList<Touple> visitados = new ArrayList<>();
         Ganador g = new Ganador(new ArrayList<Touple>());
         laberintoMagico(mapa, new Touple(0, 0), movimientos, visitados, g);
