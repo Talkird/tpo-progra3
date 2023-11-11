@@ -7,33 +7,22 @@ import java.util.List;
 
 public class Main {
 
-    public static void imprimir(String[][] mapa) {
-        for (int i = 0; i < mapa.length; i++) {
-            for (int j = 0; j < mapa[0].length; j++) {
-                System.out.print(mapa[i][j] + "     ");
-            }
-            System.out.println();
-        }
-    }
-
-
     public static ArrayList<Touple> posPortal(String[][] mapa, String portal, Touple inicial) {
         ArrayList<Touple> posPortal = new ArrayList<>();
 
         for (int i = 0; i < mapa.length; i++) {
             for (int j = 0; j < mapa[0].length; j++) {
-                if (inicial.fila != i && inicial.columna != j) {
-                    Touple pos = new Touple(i, j);
+                Touple pos = new Touple(i, j);
+                if (!(inicial.fila == i && inicial.columna == j)) {
                     if (mapa[i][j].equals(portal)) {
                         posPortal.add(pos);
                     }
                 }
-            }      
-        }
+            }
+        }      
 
         return posPortal;
     }
-
 
     public static ArrayList<Touple> obtenerMovimientosValidos(String[][] mapa, Touple actual) {
         ArrayList<Touple> movimientosValidos = new ArrayList<>();
@@ -45,29 +34,31 @@ public class Main {
             for (Touple t : posPortal) {
                 movimientosValidos.add(t);
             }
-        }
+        } 
 
-        //Fila
-        if (actual.fila < mapa.length-1 && 
-            !mapa[actual.fila+1][actual.columna].equals("#") && 
-            !mapa[actual.fila+1][actual.columna].equals("E") ) {
-            movimientosValidos.add(new Touple(actual.fila+1, actual.columna));} //Abajo
 
-        if (actual.fila > 0 && 
-            !mapa[actual.fila-1][actual.columna].equals("#") &&
-            !mapa[actual.fila-1][actual.columna].equals("E")) {
-            movimientosValidos.add(new Touple(actual.fila-1, actual.columna));} //Arriba
+            //Fila
+            if (actual.fila < mapa.length-1 && 
+                !mapa[actual.fila+1][actual.columna].equals("#") && 
+                !mapa[actual.fila+1][actual.columna].equals("E") ) {
+                movimientosValidos.add(new Touple(actual.fila+1, actual.columna));} //Abajo
 
-        //Columna
-         if (actual.columna < mapa[0].length-1 &&
-            !mapa[actual.fila][actual.columna+1].equals("#") &&
-            !mapa[actual.fila][actual.columna+1].equals("E")) {
-                movimientosValidos.add(new Touple(actual.fila, actual.columna+1));} //Derecha
-         
-         if (actual.columna > 0 &&
-            !mapa[actual.fila][actual.columna-1].equals("#") &&
-            !mapa[actual.fila][actual.columna-1].equals("E")) {
-                movimientosValidos.add(new Touple(actual.fila, actual.columna-1));} //Izquierda
+            if (actual.fila > 0 && 
+                !mapa[actual.fila-1][actual.columna].equals("#") &&
+                !mapa[actual.fila-1][actual.columna].equals("E")) {
+                movimientosValidos.add(new Touple(actual.fila-1, actual.columna));} //Arriba
+
+            //Columna
+            if (actual.columna < mapa[0].length-1 &&
+                !mapa[actual.fila][actual.columna+1].equals("#") &&
+                !mapa[actual.fila][actual.columna+1].equals("E")) {
+                    movimientosValidos.add(new Touple(actual.fila, actual.columna+1));} //Derecha
+            
+            if (actual.columna > 0 &&
+                !mapa[actual.fila][actual.columna-1].equals("#") &&
+                !mapa[actual.fila][actual.columna-1].equals("E")) {
+                    movimientosValidos.add(new Touple(actual.fila, actual.columna-1));} //Izquierda
+
 
         return movimientosValidos;
 
@@ -106,6 +97,7 @@ public class Main {
         return laberintoArray;
     }
 
+
     public static void laberintoMagico(String[][] mapa, Touple actual, int movimientos, ArrayList<Touple> visitados, Ganador ganador) 
     {
 
@@ -139,10 +131,15 @@ public class Main {
     }
 
     public static void main(String[] args) {
-
-        String[][] mapa = abrirLaberinto("laberintos/portales.txt");
+        String[][] mapa = {
+            {"E", "a", "#", "a"},
+            {".", "#", "#", "#"}, 
+            {"#", "S", ".", "."}
+        }; 
         
+        mapa = abrirLaberinto("laberintos/portales.txt");
         int movimientos = 0;
+
         ArrayList<Touple> visitados = new ArrayList<>();
         Ganador g = new Ganador(new ArrayList<Touple>());
         laberintoMagico(mapa, new Touple(0, 0), movimientos, visitados, g);
