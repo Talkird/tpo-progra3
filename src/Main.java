@@ -111,7 +111,7 @@ public class Main {
                 {
                     ganador.movimientos = movimientos;
                     ganador.visitados = visitados;
-                    //System.out.println(ganador.movimientos+1 + " movimientos");
+                    //System.out.println(ganador.movimientos+1 + " movimientos")
                 }
                 return;
             }
