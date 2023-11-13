@@ -36,28 +36,31 @@ public class Main {
             }
         } 
 
+        //Fila
+        if (actual.fila < mapa.length-1 && 
+            !mapa[actual.fila+1][actual.columna].equals("#") && 
+            !mapa[actual.fila+1][actual.columna].equals("E") ) {
+                movimientosValidos.add(new Touple(actual.fila+1, actual.columna));
+        } //Abajo
 
-            //Fila
-            if (actual.fila < mapa.length-1 && 
-                !mapa[actual.fila+1][actual.columna].equals("#") && 
-                !mapa[actual.fila+1][actual.columna].equals("E") ) {
-                movimientosValidos.add(new Touple(actual.fila+1, actual.columna));} //Abajo
+        if (actual.fila > 0 && 
+            !mapa[actual.fila-1][actual.columna].equals("#") &&
+            !mapa[actual.fila-1][actual.columna].equals("E")) {
+                movimientosValidos.add(new Touple(actual.fila-1, actual.columna));
+        } //Arriba
 
-            if (actual.fila > 0 && 
-                !mapa[actual.fila-1][actual.columna].equals("#") &&
-                !mapa[actual.fila-1][actual.columna].equals("E")) {
-                movimientosValidos.add(new Touple(actual.fila-1, actual.columna));} //Arriba
-
-            //Columna
-            if (actual.columna < mapa[0].length-1 &&
-                !mapa[actual.fila][actual.columna+1].equals("#") &&
-                !mapa[actual.fila][actual.columna+1].equals("E")) {
-                    movimientosValidos.add(new Touple(actual.fila, actual.columna+1));} //Derecha
+        //Columna
+        if (actual.columna < mapa[0].length-1 &&
+            !mapa[actual.fila][actual.columna+1].equals("#") &&
+            !mapa[actual.fila][actual.columna+1].equals("E")) {
+                movimientosValidos.add(new Touple(actual.fila, actual.columna+1));
+        } //Derecha
             
-            if (actual.columna > 0 &&
-                !mapa[actual.fila][actual.columna-1].equals("#") &&
-                !mapa[actual.fila][actual.columna-1].equals("E")) {
-                    movimientosValidos.add(new Touple(actual.fila, actual.columna-1));} //Izquierda
+        if (actual.columna > 0 &&
+            !mapa[actual.fila][actual.columna-1].equals("#") &&
+            !mapa[actual.fila][actual.columna-1].equals("E")) {
+                movimientosValidos.add(new Touple(actual.fila, actual.columna-1));
+        } //Izquierda
 
 
         return movimientosValidos;
@@ -74,7 +77,6 @@ public class Main {
     }
 
     public static String[][] abrirLaberinto(String fuente) {
-        /* Esta función abre un archivo de texto y lo convierte en una matriz de caracteres Costo: O(n*m) */
         List<List<String>> laberinto = new ArrayList<>();
         try (BufferedReader br = new BufferedReader(new FileReader(fuente))) {
             String linea = br.readLine();
@@ -131,17 +133,10 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        String[][] mapa = {
-            {"E", "a", "#", "a"},
-            {".", "#", "#", "#"}, 
-            {"#", "S", ".", "."}
-        }; 
-        
-        mapa = abrirLaberinto("laberintos/portales.txt");
         int movimientos = 0;
-
         ArrayList<Touple> visitados = new ArrayList<>();
         Ganador g = new Ganador(new ArrayList<Touple>());
+        String[][] mapa = abrirLaberinto("laberintos/portales.txt");
         laberintoMagico(mapa, new Touple(0, 0), movimientos, visitados, g);
 
         if (g.movimientos != Integer.MAX_VALUE) {
